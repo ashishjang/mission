@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button,  Row, Col, Container,Card} from 'react-bootstrap';
+import { Button,  Row, Col,Card} from 'react-bootstrap';
 import Image from 'react-bootstrap/Image'
 import './Recommendation.css';
 
