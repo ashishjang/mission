@@ -54,7 +54,7 @@ export default function Userside(){
       }
     }
        return(
-       <Container>
+       <Container className = 'contain'>
     <Card className="card">
         <div>
        <h1 className = 'heading' align = 'center'>Profile Details</h1>

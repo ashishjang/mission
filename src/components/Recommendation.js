@@ -34,7 +34,7 @@ function Item (props){
 class Recommendation extends Component {
   render() {
     return (
-      <div className = "container">
+      <div>
         <h1 className = 'heading-1'><center>Recommendations</center></h1>
         <Item/>
         <Item/>

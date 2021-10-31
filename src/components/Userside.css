@@ -36,7 +36,9 @@
     margin-top: 5%;
 }
   
-  
+.contain{
+    width: 40%;
+}
   .heading{
       margin-bottom: 20px;
       font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
