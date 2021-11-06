@@ -2,15 +2,18 @@ import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button,  Row, Form, Col, Container,Card} from 'react-bootstrap';
 import './Userside.css';
-
+import {db} from './firebase.js'
+import {collection, addDoc} from 'firebase/firestore'
 
 export default function Userside(){
-
     const [user,setUser] = useState({
       FirstName:'',
       LastName:'',
       Email:'',
       Password:'',
+      State:'',
+      Category:'',
+      Skills:'',
       City:'',
       Zip: '',
   });
@@ -20,30 +23,31 @@ export default function Userside(){
             ...user, [e.target.name]:e.target.value
         })
     }
-  
-    const postData = async(e) =>{ e.preventDefault();
-      const {FirstName,LastName,Email,Password,City,Zip} = user;  
-      if(FirstName && LastName && Email && Password && City && Zip){ 
-      const res  = await fetch(
-           "https://something-unique-aaedb-default-rtdb.firebaseio.com/database.json", 
-           { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({
-             FirstName,
-             LastName,
-             Email,
-             Password,
-             City,
-             Zip
-            }),
-         }); 
+    const usersCollectionRef = collection(db, 'users');
+    const createUser = async(e) =>{ 
+      e.preventDefault();
+      const {FirstName,LastName,Email,Password,City,Zip,State, Category, Skills} = user;  
+      if(FirstName && LastName && Email && Password && City && Zip && State && Category && Skills){ 
+        const res = await addDoc( usersCollectionRef, {
+          FirstName,
+          LastName,
+          Email,
+          Password,
+          State,
+          Category,
+          Skills,
+          City,
+          Zip,
+        });
         if (res){
           setUser({
             FirstName:'',
             LastName:'',
             Email:'',
             Password:'',
+            State:'',
+            Category:'',
+            Skills:'',
             City:'',
             Zip: '',
               });
@@ -53,6 +57,8 @@ export default function Userside(){
         alert("Please fill all the fields")
       }
     }
+    
+    
        return(
        <Container className = 'contain'>
     <Card className="card">
@@ -63,28 +69,28 @@ export default function Userside(){
     <Row className="mb-3">
       <Form.Group as={Col} controlId="formGridName">
         <Form.Label>First Name</Form.Label>
-        <Form.Control type="name" name = "FirstName" placeholder="Enter First Name" value = {user.FirstName} onChange = {getUserData}/>
+        <Form.Control type="name" name = "FirstName" placeholder="Enter First Name"  onChange = {getUserData}/>
       </Form.Group>
   
       <Form.Group as={Col} controlId="formGridLastName">
         <Form.Label>Last Name</Form.Label>
-        <Form.Control type="name" placeholder="Enter Last Name" name = "LastName" value = {user.LastName} onChange = {getUserData} />
+        <Form.Control type="name" placeholder="Enter Last Name" name = "LastName"  onChange = {getUserData} />
       </Form.Group>
     </Row>
     <Row className="mb-3">
       <Form.Group as={Col} controlId="formGridEmail">
         <Form.Label>E-mail</Form.Label>
-        <Form.Control type="name" placeholder="Enter your e-mail" name = 'Email' value = {user.Email} onChange = {getUserData}/>
+        <Form.Control type="name" placeholder="Enter your e-mail" name = 'Email' onChange = {getUserData}/>
       </Form.Group>
   
       <Form.Group as={Col} controlId="formGridPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="last name" placeholder="Enter your password" name = 'Password' value = {user.Password} onChange = {getUserData}/>
+        <Form.Control type="password" placeholder="Enter your password" name = 'Password' onChange = {getUserData}/>
       </Form.Group>
     </Row>
     <Form.Group className="mb-3" controlId="formGridAddress1">
       <Form.Label>Internship</Form.Label>
-        <Form.Select defaultValue="Choose...">
+        <Form.Select defaultValue="Choose..." name = 'Category' type = 'select' onChange = {getUserData}>
           <option>Choose...</option>
           <option>Data Science</option>
           <option>Web Development</option>
@@ -93,7 +99,7 @@ export default function Userside(){
   
     <Form.Group className="mb-3" controlId="formGridAddress2">
       <Form.Label>Skills</Form.Label>
-      <Form.Select defaultValue="Choose...">
+      <Form.Select defaultValue="Choose..." name = 'Skills' type = 'select' onChange = {getUserData}>
           <option>Choose...</option>
           <option>Python</option>
           <option>R</option>
@@ -104,12 +110,12 @@ export default function Userside(){
     <Row className="mb-3">
       <Form.Group as={Col} controlId="formGridCity">
         <Form.Label>City</Form.Label>
-        <Form.Control name = 'City' value = {user.City} onChange = {getUserData}/>
+        <Form.Control name = 'City' onChange={getUserData}/>
       </Form.Group>
   
       <Form.Group as={Col} controlId="formGridState">
         <Form.Label>State</Form.Label>
-        <Form.Select defaultValue="Choose...">
+        <Form.Select defaultValue="Choose..." name = 'State' type = 'select' onChange = {getUserData}>
           <option>Choose...</option>
           <option>Haryana</option>
           <option>Delhi</option>
@@ -119,7 +125,7 @@ export default function Userside(){
   
       <Form.Group as={Col} controlId="formGridZip">
         <Form.Label>Zip</Form.Label>
-        <Form.Control name = 'Zip' value = {user.Zip} onChange = {getUserData}/>
+        <Form.Control name = 'Zip' onChange = {getUserData}/>
       </Form.Group>
     </Row>
     
@@ -148,7 +154,7 @@ export default function Userside(){
             </div>
             ))}
             </Form.Group>
-    <Button variant="primary" type="submit" size = 'xxl' onClick = {postData}>
+    <Button variant="primary" type="submit" size = 'xxl' onClick = {createUser}>
       Submit
     </Button>
   </Form>

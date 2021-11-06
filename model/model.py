@@ -1,5 +1,4 @@
 import requests
-import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from google.cloud import storage
 import numpy as np 
@@ -12,8 +11,8 @@ nltk.download('stopwords')
 storage_client = storage.Client()
 bucket = storage_client.get_bucket('internship-recommender')
 blob = bucket.blob('InternshipRecommender.pkl')
-blob.download_to_filename('InternshipRecommender.pkl')
-model_pk = pickle.load(open('InternshipRecommender.pkl', 'rb'))
+blob.download_to_filename('/tmp/InternshipRecommender.pkl')
+model_pk = pickle.load(open('/tmp/InternshipRecommender.pkl', 'rb'))
 tokenizer = RegexpTokenizer(r'\w+')
 en_stopwords = set(stopwords.words('english'))
 ps = PorterStemmer()

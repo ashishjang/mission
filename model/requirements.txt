@@ -1,5 +1,5 @@
-requests
-numpy
-scikit-learn
-google-cloud-storage
-nltk
+requests==2.23.0
+numpy==1.19.2
+scikit-learn==0.22.2
+google-cloud-storage==1.22.0
+nltk==3.5
